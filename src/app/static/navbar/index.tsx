@@ -53,8 +53,6 @@ export default function Navbar() {
             authenticationStatus,
             mounted,
           }) => {
-            // Note: If your app doesn't use authentication, you
-            // can remove all 'authenticationStatus' checks
             const ready = mounted && authenticationStatus !== 'loading'
             const connected =
               ready &&

@@ -62,7 +62,7 @@ export default function Interport({
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                marginTop: '100px',
+                marginTop: '80px',
               }}
             >
               {children}

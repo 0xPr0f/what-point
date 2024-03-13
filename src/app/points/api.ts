@@ -1,28 +1,45 @@
 import axios from 'axios'
-const TESTNET_API_URL: string = 'https://waitlist-api.develop.testblast.io'
+import { cookies } from 'next/headers'
+
+const cookieStore = cookies()
 
 export const dappAuthChallenge = async (
   contractAddress: string,
   operatorAddress: string
 ) => {
   try {
-    const response = await axios.post(
-      `${TESTNET_API_URL}/v1/dapp-auth/challenge`,
-      {
-        contractAddress: contractAddress, // contract with points to be distributed
-        operatorAddress: operatorAddress, // the EOA configured with IBlastPoints
-      }
-    )
-
+    const response = await axios({
+      method: 'post', //you can set what request you want to be
+      url: '/api/dapp-auth-challenge',
+      data: {
+        contractAddress: contractAddress,
+        operatorAddress: operatorAddress,
+      },
+      headers: {},
+    })
     console.log('Response:', response.data)
-    return {
-      success: true,
-      challengeData: '0x', // save this for later; don't sign it
-      message: '', // this is what you need to sign
-    }
+    return response.data
   } catch (error) {
     console.error('Error making post request:', error.response)
   }
 }
-
-dappAuthChallenge('', '')
+export const dappAuthSolve = async (
+  challengeData: string,
+  signature: string
+) => {
+  try {
+    const response = await axios({
+      method: 'post', //you can set what request you want to be
+      url: '/api/dapp-auth-solve',
+      data: {
+        challengeData: challengeData,
+        signature: signature,
+      },
+      headers: {},
+    })
+    console.log('Response:', response.data)
+    return response.data
+  } catch (error) {
+    console.error('Error making post request:', error.response)
+  }
+}

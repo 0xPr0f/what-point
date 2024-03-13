@@ -70,9 +70,9 @@ export default function Safe() {
               Deployed safes
             </h4>
             {tags.map((tag) => (
-              <>
+              <div key={tag}>
                 <div className="flex justify-between align-middle">
-                  <Button variant="link" key={tag} className="text-sm">
+                  <Button variant="link" className="text-sm">
                     {tag}
                   </Button>
                   <Button size="sm" variant="outline">
@@ -80,7 +80,7 @@ export default function Safe() {
                   </Button>
                 </div>
                 <Separator className="my-2" />
-              </>
+              </div>
             ))}
           </div>
         </ScrollArea>

@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Interport from './interport'
 import { cn } from '@/lib/utils'
+import { CookiesProvider } from 'next-client-cookies/server'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,7 +25,9 @@ export default function RootLayout({
       <body
         className={cn('min-h-screen font-sans antialiased', fontSans.variable)}
       >
-        <Interport children={children}></Interport>
+        <CookiesProvider>
+          <Interport children={children}></Interport>
+        </CookiesProvider>
       </body>
     </html>
   )

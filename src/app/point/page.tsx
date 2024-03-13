@@ -16,9 +16,13 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { toast } from 'sonner'
 import { useSignMessage } from 'wagmi'
 import { useState } from 'react'
+import { useCookies } from 'next-client-cookies'
+import { useRouter } from 'next/navigation'
 
 export default function Points() {
   const account = useAccount()
+  const cookies = useCookies()
+  const router = useRouter()
   const { signMessage } = useSignMessage()
   const [pointContract, setPointsContract] = useState<{
     contract_address: string
@@ -35,7 +39,11 @@ export default function Points() {
       {
         onSuccess(data) {
           dappAuthSolve(challengeinfo.challengeData, data).then((d) => {
-            // store the cookies and the probably redirect the user to the address page that will retrive the cookies
+            cookies.set('points-bearer-token', btoa(d.bearerToken), {
+              expires: new Date().getTime() + 1 * 60 * 60 * 1000,
+              secure: true,
+            })
+            router.push(`/point/${pointContract.contract_address}`)
             console.log(d)
           })
         },

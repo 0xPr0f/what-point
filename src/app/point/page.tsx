@@ -15,31 +15,32 @@ import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { toast } from 'sonner'
 import { useSignMessage } from 'wagmi'
+import { useState } from 'react'
 
 export default function Points() {
   const account = useAccount()
   const { signMessage } = useSignMessage()
+  const [pointContract, setPointsContract] = useState<{
+    contract_address: string
+    acceptedTOS: string
+  }>({ contract_address: '', acceptedTOS: '' })
 
   const dappauth = async (contractaddress: string) => {
-    let _data: string = ''
-
     const challengeinfo = await dappAuthChallenge(
       contractaddress,
       account.address as string
     )
-
-    const signature = signMessage(
+    signMessage(
       { message: challengeinfo.message },
       {
         onSuccess(data) {
-          _data = data
-          console.log(data)
+          dappAuthSolve(challengeinfo.challengeData, data).then((d) => {
+            // store the cookies and the probably redirect the user to the address page that will retrive the cookies
+            console.log(d)
+          })
         },
       }
     )
-    const solveinfo = await dappAuthSolve(challengeinfo.challengeData, _data)
-    console.log(solveinfo)
-    console.log(solveinfo?.bearerToken)
   }
   return (
     <>
@@ -90,7 +91,7 @@ export default function Points() {
           <CardFooter className="justify-end">
             <Button
               onClick={async () => {
-                await dappauth('0x')
+                await dappauth('0xa2C6C353B9Bd02106Da1ff080911ab5137aF2224')
               }}
               variant="secondary"
             >

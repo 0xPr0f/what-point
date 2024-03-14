@@ -58,5 +58,7 @@ export const pointBalance = async (address: string, bearerToken: string) => {
     return response.data as BalanceResponse
   } catch (error) {
     console.error(error)
+    console.log(error?.response.status)
+    return error?.response
   }
 }

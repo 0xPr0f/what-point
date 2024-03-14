@@ -17,10 +17,13 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { BalanceResponse } from '../types'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 export default function Point({ params }: { params: { paddress: string } }) {
   const cookies = useCookies()
   const address = params.paddress
+  const router = useRouter()
   const [correctAddressOpen, setCorrectAddressOpen] = useState()
   const deleteCookies = () => {
     cookies.remove('points-bearer-token')
@@ -30,10 +33,38 @@ export default function Point({ params }: { params: { paddress: string } }) {
       ? atob(cookies.get('points-bearer-token') as string)
       : ''
   )
-
+  function Toast({
+    tittle,
+    description,
+    action = false,
+  }: {
+    tittle: string
+    description: string
+    action?: any
+  }) {
+    if (action) {
+      toast(tittle, {
+        description: description,
+        action: action,
+      })
+    } else if (!action) {
+      toast(tittle, {
+        description: description,
+      })
+    }
+  }
   const [points, setPoints] = useState<BalanceResponse>()
   const fetchPointBalance = async () => {
     const response = await pointBalance(address, bearerToken)
+    if (response.status === 401 || response.statusText === 'Unauthorized')
+      return Toast({
+        tittle: 'Auth Key expired',
+        description: 'Duration of 1hr expired, auth again',
+        action: {
+          label: 'Auth',
+          onClick: () => router.push('/point'),
+        },
+      })
     setPoints(response)
     console.log(response)
   }
@@ -69,9 +100,9 @@ export default function Point({ params }: { params: { paddress: string } }) {
           <TabsTrigger value="developer">Developer</TabsTrigger>
         </TabsList>
         <TabsContent value="liquidity">
-          <Card>
+          <Card style={{ backgroundColor: '#1c1c1c', color: 'white' }}>
             <CardHeader>
-              <CardTitle>Liquidity</CardTitle>
+              <CardTitle style={{ fontSize: '20px' }}>Liquidity</CardTitle>
               <CardDescription>
                 This shows points gotten from the assets in the contract
               </CardDescription>
@@ -111,12 +142,19 @@ export default function Point({ params }: { params: { paddress: string } }) {
                 />
               </div>
             </CardContent>
+            <CardFooter>
+              <CardDescription>
+                All values are probably denoted in pts
+              </CardDescription>
+            </CardFooter>
           </Card>
         </TabsContent>
         <TabsContent value="developer">
-          <Card>
+          <Card style={{ backgroundColor: '#1c1c1c', color: 'white' }}>
             <CardHeader>
-              <CardTitle>Developer [Blast Gold]</CardTitle>
+              <CardTitle style={{ fontSize: '20px' }}>
+                Developer [Blast Gold]
+              </CardTitle>
               <CardDescription>
                 This shows points rewarded to you from the Blast core
               </CardDescription>
@@ -156,6 +194,11 @@ export default function Point({ params }: { params: { paddress: string } }) {
                 />
               </div>
             </CardContent>
+            <CardFooter>
+              <CardDescription>
+                All values are probably denoted in pts
+              </CardDescription>
+            </CardFooter>
           </Card>
         </TabsContent>
       </Tabs>

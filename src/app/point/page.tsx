@@ -31,19 +31,20 @@ export default function Points() {
   function Toast({
     tittle,
     description,
-    action = false,
+    action,
   }: {
     tittle: string
     description: string
-    action?: boolean
+    action?: any
   }) {
     if (action) {
       toast(tittle, {
         description: description,
-        action: {
+        action: action,
+        /* action: {
           label: 'View',
           onClick: () => console.log('go to etherscan'),
-        },
+        }, */
       })
     } else if (!action) {
       toast(tittle, {
@@ -56,7 +57,7 @@ export default function Points() {
     console.log(pointContract)
     const { contract_address, acceptedTOS } = pointContract
     if (!contract_address || !acceptedTOS || !(contract_address.length === 42))
-      Toast({
+      return Toast({
         tittle: 'Configure all params',
         description:
           'Make sure the contract address is correct and you have accepted TOS',
@@ -128,6 +129,7 @@ export default function Points() {
             </form>
             <div className="items-top flex mt-10 space-x-2">
               <Checkbox
+                style={{ backgroundColor: 'white', color: 'black' }}
                 checked={pointContract.acceptedTOS}
                 onCheckedChange={(e) => {
                   setPointsContract({

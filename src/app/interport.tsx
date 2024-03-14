@@ -49,7 +49,6 @@ export default function Interport({
           <RainbowKitProvider
             modalSize="compact"
             theme={darkTheme({
-              accentColor: '#c3073f',
               accentColorForeground: '#1a1a1d',
               borderRadius: 'none',
               fontStack: 'system',

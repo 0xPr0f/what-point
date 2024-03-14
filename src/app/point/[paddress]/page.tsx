@@ -42,6 +42,20 @@ export default function Point({ params }: { params: { paddress: string } }) {
     console.log(params.paddress)
     console.log(bearerToken)
   }, [])
+  function TextSpan({
+    lhs,
+    rhs,
+  }: Readonly<{
+    lhs?: React.ReactNode
+    rhs?: React.ReactNode
+  }>) {
+    return (
+      <div className="flex flex-row text-base items-center gap-1">
+        <span className="font-semibold">{lhs}</span>
+        <span className="font-light">{rhs}</span>
+      </div>
+    )
+  }
   return (
     <div>
       <div className="relative float-right	">
@@ -145,20 +159,6 @@ export default function Point({ params }: { params: { paddress: string } }) {
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
-  )
-}
-export function TextSpan({
-  lhs,
-  rhs,
-}: Readonly<{
-  lhs?: React.ReactNode
-  rhs?: React.ReactNode
-}>) {
-  return (
-    <div className="flex flex-row text-base items-center gap-1">
-      <span className="font-semibold">{lhs}</span>
-      <span className="font-light">{rhs}</span>
     </div>
   )
 }

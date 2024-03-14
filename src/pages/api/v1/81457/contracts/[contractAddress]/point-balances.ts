@@ -1,7 +1,7 @@
-// pages/api/contracts/[contractAddress].ts
+// pages/api/81457[blastMainnet]/contracts/[contractAddress].ts
+import { BLAST_MAINNET_API_URL } from '@/components/utils'
 import axios from 'axios'
 import type { NextApiRequest, NextApiResponse } from 'next'
-const TESTNET_API_URL: string = 'https://waitlist-api.develop.testblast.io'
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -18,7 +18,7 @@ export default async function handler(
 
       // Forward the request to the external API
       const response = await axios.get(
-        `${TESTNET_API_URL}/v1/contracts/${contractAddress}/point-balances`,
+        `${BLAST_MAINNET_API_URL}/v1/contracts/${contractAddress}/point-balances`,
         {
           headers: {
             // Optional: Include any required headers here

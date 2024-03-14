@@ -7,12 +7,13 @@ import {
 
 export const dappAuthChallenge = async (
   contractAddress: string,
-  operatorAddress: string
+  operatorAddress: string,
+  chainId: string
 ) => {
   try {
     const response = await axios({
       method: 'post', //you can set what request you want to be
-      url: '/api/v1/dapp-auth/challenge',
+      url: `/api/v1/${chainId}/dapp-auth/challenge`,
       data: {
         contractAddress: contractAddress,
         operatorAddress: operatorAddress,
@@ -28,12 +29,13 @@ export const dappAuthChallenge = async (
 }
 export const dappAuthSolve = async (
   challengeData: string,
-  signature: string
+  signature: string,
+  chainId: string
 ) => {
   try {
     const response = await axios({
       method: 'post', //you can set what request you want to be
-      url: '/api/v1/dapp-auth/solve',
+      url: `/api/v1/${chainId}/dapp-auth/solve`,
       data: {
         challengeData: challengeData,
         signature: signature,
@@ -48,14 +50,18 @@ export const dappAuthSolve = async (
   }
 }
 
-export const pointBalance = async (address: string, bearerToken: string) => {
+export const pointBalance = async (
+  address: string,
+  bearerToken: string,
+  chainId: string
+) => {
   if (!bearerToken) {
     return new Error('No bearer token')
   }
   try {
     const response = await axios({
       method: 'get', //you can set what request you want to be
-      url: `/api/v1/contracts/${address}/point-balances`,
+      url: `/api/v1/${chainId}/contracts/${address}/point-balances`,
       data: {},
       headers: {
         Authorization: `Bearer ${bearerToken}`,

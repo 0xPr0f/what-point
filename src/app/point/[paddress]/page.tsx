@@ -19,17 +19,18 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { BalanceResponse } from '../types'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { useChainId } from 'wagmi'
+import { DEFAULT_CHAIN_ID } from '@/components/utils'
 
 export default function Point({ params }: { params: { paddress: string } }) {
   const cookies = useCookies()
   const contractAddress = params.paddress
   const router = useRouter()
+  const chainId = useChainId()
   const [correctAddressOpen, setCorrectAddressOpen] = useState()
   const deleteCookies = () => {
     cookies.remove('points-bearer-token')
@@ -61,7 +62,11 @@ export default function Point({ params }: { params: { paddress: string } }) {
   }
   const [points, setPoints] = useState<BalanceResponse>()
   const fetchPointBalance = async () => {
-    const response = await pointBalance(contractAddress, bearerToken)
+    const response = await pointBalance(
+      contractAddress,
+      bearerToken,
+      chainId ? chainId.toString() : DEFAULT_CHAIN_ID
+    )
     if (response.status === 401 || response.statusText === 'Unauthorized') {
       return Toast({
         tittle: 'Auth Key expired',
@@ -105,7 +110,7 @@ export default function Point({ params }: { params: { paddress: string } }) {
     )
   }
   return (
-    <div>
+    <div className="mt-14">
       <div className="relative float-right	">
         <Button variant="default" onClick={fetchPointBalance}>
           Refresh

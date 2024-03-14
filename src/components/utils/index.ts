@@ -27,5 +27,11 @@ export function isValidAddress(address: string) {
   // Check if the address matches the pattern
   return pattern.test(address)
 }
+
 export const BLAST_MAINNETSCAN_URL = 'https://blastscan.io/'
 export const BLAST_TESTNETSCAN_URL = 'https://sepolia.blastscan.io/'
+// api down
+export const BLAST_TESTNET_API_URL = 'https://waitlist-api.develop.testblast.io'
+export const BLAST_MAINNET_API_URL = 'https://waitlist-api.prod.blast.io'
+
+export const DEFAULT_CHAIN_ID = '168587773'

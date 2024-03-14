@@ -1,8 +1,8 @@
-// pages/api/dapp-auth-solve.ts
+// pages/api/dapp-auth-challenge.ts
+import { BLAST_MAINNET_API_URL } from '@/components/utils'
 import axios from 'axios'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-const TESTNET_API_URL: string = 'https://waitlist-api.develop.testblast.io'
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -11,7 +11,7 @@ export default async function handler(
     try {
       // Forward the request to the external API
       const response = await axios.post(
-        `${TESTNET_API_URL}/v1/dapp-auth/solve`,
+        `${BLAST_MAINNET_API_URL}/v1/dapp-auth/challenge`,
         req.body,
         {
           headers: {

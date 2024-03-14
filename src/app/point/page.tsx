@@ -1,7 +1,6 @@
 'use client'
 import { Button } from '@/components/ui/button'
-import { dappAuthChallenge, dappAuthSolve, isError } from './api'
-import { useAccount } from 'wagmi'
+import { useAccount, useSignMessage, useChainId } from 'wagmi'
 import { Input } from '@/components/ui/input'
 import {
   Card,
@@ -14,13 +13,15 @@ import {
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { toast } from 'sonner'
-import { useSignMessage } from 'wagmi'
 import { useState } from 'react'
 import { useCookies } from 'next-client-cookies'
 import { useRouter } from 'next/navigation'
+import { DEFAULT_CHAIN_ID } from '@/components/utils'
+import { dappAuthChallenge, dappAuthSolve, isError } from './api'
 
 export default function Points() {
   const { address, isConnected } = useAccount()
+  const chainId = useChainId()
   const cookies = useCookies()
   const router = useRouter()
   const { signMessage } = useSignMessage()
@@ -55,6 +56,7 @@ export default function Points() {
 
   const dappauth = async (contractaddress: string) => {
     //console.log(pointContract)
+
     const { contract_address, acceptedTOS } = pointContract
     if (!isConnected)
       return Toast({
@@ -70,7 +72,8 @@ export default function Points() {
 
     const challengeinfo = await dappAuthChallenge(
       contractaddress,
-      address as string
+      address as string,
+      chainId ? chainId.toString() : DEFAULT_CHAIN_ID
     )
     if (isError(challengeinfo)) {
       return Toast({
@@ -82,20 +85,18 @@ export default function Points() {
       { message: challengeinfo?.message as string },
       {
         onSuccess(data) {
-          dappAuthSolve(challengeinfo?.challengeData as string, data).then(
-            (d) => {
-              cookies.set(
-                'points-bearer-token',
-                btoa(d?.bearerToken as string),
-                {
-                  expires: new Date().getTime() + 1 * 60 * 60 * 1000,
-                  secure: true,
-                }
-              )
-              router.push(`/point/${pointContract.contract_address}`)
-              //console.log(d)
-            }
-          )
+          dappAuthSolve(
+            challengeinfo?.challengeData as string,
+            data,
+            chainId ? chainId.toString() : DEFAULT_CHAIN_ID
+          ).then((d) => {
+            cookies.set('points-bearer-token', btoa(d?.bearerToken as string), {
+              expires: new Date().getTime() + 1 * 60 * 60 * 1000,
+              secure: true,
+            })
+            router.push(`/point/${pointContract.contract_address}`)
+            //console.log(d)
+          })
         },
       }
     )

@@ -16,7 +16,7 @@ import {
 } from '@rainbow-me/rainbowkit/wallets'
 import { WagmiProvider } from 'wagmi'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
-import { blastSepolia } from 'viem/chains'
+import { blast, blastSepolia } from 'viem/chains'
 import { Toaster } from '@/components/ui/sonner'
 
 const { wallets } = getDefaultWallets()
@@ -30,7 +30,7 @@ export const config = getDefaultConfig({
       wallets: [rabbyWallet, trustWallet, ledgerWallet],
     },
   ],
-  chains: [blastSepolia],
+  chains: [blastSepolia, blast],
 
   ssr: true,
 })

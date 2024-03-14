@@ -18,7 +18,7 @@ export default async function handler(
 
       // Forward the request to the external API
       const response = await axios.get(
-        TESTNET_API_URL + `/v1/contracts/${contractAddress}/point-balances`,
+        `${TESTNET_API_URL}/v1/contracts/${contractAddress}/point-balances`,
         {
           headers: {
             // Optional: Include any required headers here

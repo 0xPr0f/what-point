@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { AuthChallenge, AuthSolve, BalanceResponse } from './types'
 
 export const dappAuthChallenge = async (
   contractAddress: string,
@@ -7,7 +8,7 @@ export const dappAuthChallenge = async (
   try {
     const response = await axios({
       method: 'post', //you can set what request you want to be
-      url: '/api/dapp-auth-challenge',
+      url: '/api/v1/dapp-auth-challenge',
       data: {
         contractAddress: contractAddress,
         operatorAddress: operatorAddress,
@@ -15,7 +16,7 @@ export const dappAuthChallenge = async (
       headers: {},
     })
     console.log('Response:', response.data)
-    return response.data
+    return response.data as AuthChallenge
   } catch (error) {
     console.error('Error making post request:', error.response)
   }
@@ -27,7 +28,7 @@ export const dappAuthSolve = async (
   try {
     const response = await axios({
       method: 'post', //you can set what request you want to be
-      url: '/api/dapp-auth-solve',
+      url: '/api/v1/dapp-auth-solve',
       data: {
         challengeData: challengeData,
         signature: signature,
@@ -35,8 +36,27 @@ export const dappAuthSolve = async (
       headers: {},
     })
     console.log('Response:', response.data)
-    return response.data
+    return response.data as AuthSolve
   } catch (error) {
     console.error('Error making post request:', error.response)
+  }
+}
+
+export const pointBalance = async (address: string, bearerToken: string) => {
+  if (!bearerToken) throw new Error('No bearer token')
+  try {
+    const response = await axios({
+      method: 'get', //you can set what request you want to be
+      url: '/api/v1/contracts/' + address,
+      data: {},
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+      },
+    })
+
+    console.log(response.data)
+    return response.data as BalanceResponse
+  } catch (error) {
+    console.error(error)
   }
 }

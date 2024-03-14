@@ -26,26 +26,64 @@ export default function Points() {
   const { signMessage } = useSignMessage()
   const [pointContract, setPointsContract] = useState<{
     contract_address: string
-    acceptedTOS: string
-  }>({ contract_address: '', acceptedTOS: '' })
+    acceptedTOS: boolean
+  }>({ contract_address: '', acceptedTOS: false })
+  function Toast({
+    tittle,
+    description,
+    action = false,
+  }: {
+    tittle: string
+    description: string
+    action?: boolean
+  }) {
+    if (action) {
+      toast(tittle, {
+        description: description,
+        action: {
+          label: 'View',
+          onClick: () => console.log('go to etherscan'),
+        },
+      })
+    } else if (!action) {
+      toast(tittle, {
+        description: description,
+      })
+    }
+  }
 
   const dappauth = async (contractaddress: string) => {
+    console.log(pointContract)
+    const { contract_address, acceptedTOS } = pointContract
+    if (!contract_address || !acceptedTOS || !(contract_address.length === 42))
+      Toast({
+        tittle: 'Configure all params',
+        description:
+          'Make sure the contract address is correct and you have accepted TOS',
+      })
+
     const challengeinfo = await dappAuthChallenge(
       contractaddress,
       account.address as string
     )
     signMessage(
-      { message: challengeinfo.message },
+      { message: challengeinfo?.message as string },
       {
         onSuccess(data) {
-          dappAuthSolve(challengeinfo.challengeData, data).then((d) => {
-            cookies.set('points-bearer-token', btoa(d.bearerToken), {
-              expires: new Date().getTime() + 1 * 60 * 60 * 1000,
-              secure: true,
-            })
-            router.push(`/point/${pointContract.contract_address}`)
-            console.log(d)
-          })
+          dappAuthSolve(challengeinfo?.challengeData as string, data).then(
+            (d) => {
+              cookies.set(
+                'points-bearer-token',
+                btoa(d?.bearerToken as string),
+                {
+                  expires: new Date().getTime() + 1 * 60 * 60 * 1000,
+                  secure: true,
+                }
+              )
+              router.push(`/point/${pointContract.contract_address}`)
+              console.log(d)
+            }
+          )
         },
       }
     )
@@ -71,14 +109,31 @@ export default function Points() {
               <div className="grid w-full items-center gap-4">
                 <div className="flex flex-col space-y-1.5">
                   <Label htmlFor="name">Contract address</Label>
-                  <Input id="name" placeholder="contract address..." />
+                  <Input
+                    value={pointContract.contract_address}
+                    onChange={(e) => {
+                      const re = /(?:0[xX])?[0-9a-fA-F]+/
+                      if (e.target.value === '' || re.test(e.target.value)) {
+                        setPointsContract({
+                          contract_address: e.target.value,
+                          acceptedTOS: pointContract.acceptedTOS,
+                        })
+                      }
+                    }}
+                    id="name"
+                    placeholder="contract address..."
+                  />
                 </div>
               </div>
             </form>
             <div className="items-top flex mt-10 space-x-2">
               <Checkbox
-                onChange={() => {
-                  console.log('checked')
+                checked={pointContract.acceptedTOS}
+                onCheckedChange={(e) => {
+                  setPointsContract({
+                    contract_address: pointContract.contract_address,
+                    acceptedTOS: e as boolean,
+                  })
                 }}
                 id="terms1"
               />
@@ -99,7 +154,7 @@ export default function Points() {
           <CardFooter className="justify-end">
             <Button
               onClick={async () => {
-                await dappauth('0xa2C6C353B9Bd02106Da1ff080911ab5137aF2224')
+                await dappauth(pointContract.contract_address)
               }}
               variant="secondary"
             >

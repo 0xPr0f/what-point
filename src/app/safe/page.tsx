@@ -1,5 +1,5 @@
 'use client'
-import * as React from 'react'
+import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -28,6 +28,8 @@ export default function Safe() {
       },
     })
   }
+
+  const [safeName, setSafeName] = useState<string>()
   return (
     <>
       <div className="flex flex-col gap-8">
@@ -52,7 +54,14 @@ export default function Safe() {
               <div className="grid w-full items-center gap-4">
                 <div className="flex flex-col space-y-1.5">
                   <Label htmlFor="name">Name</Label>
-                  <Input id="name" placeholder="Name of your safe" />
+                  <Input
+                    value={safeName}
+                    onChange={(e) => {
+                      setSafeName(e.target.value)
+                    }}
+                    id="name"
+                    placeholder="Name of your safe"
+                  />
                 </div>
               </div>
             </form>

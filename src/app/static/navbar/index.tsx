@@ -35,7 +35,7 @@ export default function Navbar() {
           </Button>
           <Button
             style={{ color: '#9d9d9d' }}
-            variant={isActive('/points') ? 'ghost' : 'default'}
+            variant={isActive('/point') ? 'ghost' : 'default'}
             asChild
           >
             <Link href="/point" className="inline-block px-4 py-2">

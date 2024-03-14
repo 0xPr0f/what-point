@@ -1,6 +1,6 @@
 'use client'
 import { Button } from '@/components/ui/button'
-import { dappAuthChallenge, dappAuthSolve } from './api'
+import { dappAuthChallenge, dappAuthSolve, isError } from './api'
 import { useAccount } from 'wagmi'
 import { Input } from '@/components/ui/input'
 import {
@@ -20,7 +20,7 @@ import { useCookies } from 'next-client-cookies'
 import { useRouter } from 'next/navigation'
 
 export default function Points() {
-  const account = useAccount()
+  const { address, isConnected } = useAccount()
   const cookies = useCookies()
   const router = useRouter()
   const { signMessage } = useSignMessage()
@@ -43,7 +43,7 @@ export default function Points() {
         action: action,
         /* action: {
           label: 'View',
-          onClick: () => console.log('go to etherscan'),
+          onClick: () => //console.log('go to etherscan'),
         }, */
       })
     } else if (!action) {
@@ -54,19 +54,30 @@ export default function Points() {
   }
 
   const dappauth = async (contractaddress: string) => {
-    console.log(pointContract)
+    //console.log(pointContract)
     const { contract_address, acceptedTOS } = pointContract
+    if (!isConnected)
+      return Toast({
+        tittle: 'Connect wallet',
+        description: 'Make sure wallet connected and on correct network',
+      })
     if (!contract_address || !acceptedTOS || !(contract_address.length === 42))
       return Toast({
         tittle: 'Configure all params',
         description:
-          'Make sure the contract address is correct and you have accepted TOS',
+          'Make sure contract address is correct and have accepted TOS',
       })
 
     const challengeinfo = await dappAuthChallenge(
       contractaddress,
-      account.address as string
+      address as string
     )
+    if (isError(challengeinfo)) {
+      return Toast({
+        tittle: 'Challenge failed',
+        description: 'Cannot request a challenge for this contract',
+      })
+    }
     signMessage(
       { message: challengeinfo?.message as string },
       {
@@ -82,7 +93,7 @@ export default function Points() {
                 }
               )
               router.push(`/point/${pointContract.contract_address}`)
-              console.log(d)
+              //console.log(d)
             }
           )
         },

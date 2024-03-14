@@ -28,7 +28,7 @@ import { useRouter } from 'next/navigation'
 
 export default function Point({ params }: { params: { paddress: string } }) {
   const cookies = useCookies()
-  const address = params.paddress
+  const contractAddress = params.paddress
   const router = useRouter()
   const [correctAddressOpen, setCorrectAddressOpen] = useState()
   const deleteCookies = () => {
@@ -61,11 +61,11 @@ export default function Point({ params }: { params: { paddress: string } }) {
   }
   const [points, setPoints] = useState<BalanceResponse>()
   const fetchPointBalance = async () => {
-    const response = await pointBalance(address, bearerToken)
+    const response = await pointBalance(contractAddress, bearerToken)
     if (response.status === 401 || response.statusText === 'Unauthorized') {
       return Toast({
         tittle: 'Auth Key expired',
-        description: 'Duration of 1hr expired, auth again',
+        description: 'Duration of 1hr exceeded auth again',
         action: {
           label: 'Auth',
           onClick: () => router.push('/point'),
@@ -75,7 +75,7 @@ export default function Point({ params }: { params: { paddress: string } }) {
       return Toast({
         tittle: 'No Bearer Token Auth',
         description:
-          'Bearer Token not found, allow cookies \n on this site and auth again',
+          'Bearer Token not found, allow cookies on this site and auth again',
         action: {
           label: 'Auth',
           onClick: () => router.push('/point'),
@@ -83,11 +83,12 @@ export default function Point({ params }: { params: { paddress: string } }) {
       })
     }
     setPoints(response)
-    console.log(response)
+    //console.log(response)
   }
 
   useEffect(() => {
     fetchPointBalance()
+    console.log(1)
   }, [])
   function TextSpan({
     lhs,
@@ -124,14 +125,14 @@ export default function Point({ params }: { params: { paddress: string } }) {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-              <div className="space-y-1">
+              <div>
                 <TextSpan
                   lhs="available:"
                   rhs={points?.balancesByPointType.LIQUIDITY.available}
                 />
               </div>
               <div>
-                <Accordion type="single" collapsible className="w-full">
+                <Accordion type="multiple" className="w-full">
                   <AccordionItem value="item-1">
                     <AccordionTrigger className="text-base">
                       ETH

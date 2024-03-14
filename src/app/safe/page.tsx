@@ -14,17 +14,49 @@ import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
+import { BLAST_TESTNETSCAN_URL, loadExternalURL } from '@/components/utils'
 
 const tags = Array.from({ length: 20 }).map(
   (_, i, a) => `v1.2.0-beta.${a.length - i}`
 )
+/*
+function Toast (tittle, disc){
+  toast('Safe deployed', {
+    description: 'txhash',
+    action: {
+      label: 'View',
+      onClick: () => loadExternalURL(`${BLAST_TESTNETSCAN_URL}/tx/`),
+    },
+  })
+}*/
+function Toast({
+  tittle,
+  description,
+  action = false,
+}: {
+  tittle: string
+  description: string
+  action?: any
+}) {
+  if (action) {
+    toast(tittle, {
+      description: description,
+      action: action,
+    })
+  } else if (!action) {
+    toast(tittle, {
+      description: description,
+    })
+  }
+}
 export default function Safe() {
   function createSafe() {
-    toast('Safe deployed', {
+    Toast({
+      tittle: 'Safe deployed',
       description: 'txhash',
       action: {
         label: 'View',
-        onClick: () => console.log('go to etherscan'),
+        onClick: () => loadExternalURL(`${BLAST_TESTNETSCAN_URL}/tx/`),
       },
     })
   }

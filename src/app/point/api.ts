@@ -15,10 +15,11 @@ export const dappAuthChallenge = async (
       },
       headers: {},
     })
-    console.log('Response:', response.data)
+    // //console.log('Response:', response.data)
     return response.data as AuthChallenge
   } catch (error) {
     console.error('Error making post request:', error.response)
+    return error?.response
   }
 }
 export const dappAuthSolve = async (
@@ -35,10 +36,11 @@ export const dappAuthSolve = async (
       },
       headers: {},
     })
-    console.log('Response:', response.data)
+    //console.log('Response:', response.data)
     return response.data as AuthSolve
   } catch (error) {
     console.error('Error making post request:', error.response)
+    return error?.response
   }
 }
 
@@ -56,11 +58,11 @@ export const pointBalance = async (address: string, bearerToken: string) => {
       },
     })
 
-    console.log(response.data)
+    //console.log(response.data)
     return response.data as BalanceResponse
   } catch (error) {
     console.error(error)
-    console.log(error?.response.status)
+    //console.log(error?.response.status)
     return error?.response
   }
 }

@@ -11,7 +11,7 @@ export default function Home() {
           <div>
             <h1 className="text-5xl font-extrabold mb-4">SBPT</h1>
             <p className="text-2xl">
-              Why do i need points? Why do i need safe ? mystery
+              Why do i need points? Why do i need safe? - mystery
             </p>
             {/**probably make some scrolling stuffs here */}
             <p className="text-2xl">This site is probably point-less</p>

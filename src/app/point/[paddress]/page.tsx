@@ -3,7 +3,13 @@
 import { Button } from '@/components/ui/button'
 import { useCookies } from 'next-client-cookies'
 import React, { useEffect, useState } from 'react'
-import { pointBalance } from '../api'
+import { isError, pointBalance } from '../api'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
 
 import {
   Card,
@@ -56,7 +62,7 @@ export default function Point({ params }: { params: { paddress: string } }) {
   const [points, setPoints] = useState<BalanceResponse>()
   const fetchPointBalance = async () => {
     const response = await pointBalance(address, bearerToken)
-    if (response.status === 401 || response.statusText === 'Unauthorized')
+    if (response.status === 401 || response.statusText === 'Unauthorized') {
       return Toast({
         tittle: 'Auth Key expired',
         description: 'Duration of 1hr expired, auth again',
@@ -65,13 +71,23 @@ export default function Point({ params }: { params: { paddress: string } }) {
           onClick: () => router.push('/point'),
         },
       })
+    } else if (isError(response)) {
+      return Toast({
+        tittle: 'No Bearer Token Auth',
+        description:
+          'Bearer Token not found, allow cookies \n on this site and auth again',
+        action: {
+          label: 'Auth',
+          onClick: () => router.push('/point'),
+        },
+      })
+    }
     setPoints(response)
     console.log(response)
   }
 
   useEffect(() => {
-    console.log(params.paddress)
-    console.log(bearerToken)
+    fetchPointBalance()
   }, [])
   function TextSpan({
     lhs,
@@ -114,6 +130,73 @@ export default function Point({ params }: { params: { paddress: string } }) {
                   rhs={points?.balancesByPointType.LIQUIDITY.available}
                 />
               </div>
+              <div>
+                <Accordion type="single" collapsible className="w-full">
+                  <AccordionItem value="item-1">
+                    <AccordionTrigger className="text-base">
+                      ETH
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <TextSpan
+                        lhs="earnedCumulative:"
+                        rhs={
+                          points?.balancesByPointType.LIQUIDITY.byAsset.ETH
+                            .earnedCumulative
+                        }
+                      />
+                      <TextSpan
+                        lhs="earnedCumulativeBlock:"
+                        rhs={
+                          points?.balancesByPointType.LIQUIDITY.byAsset.ETH
+                            .earnedCumulativeBlock
+                        }
+                      />
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="item-2">
+                    <AccordionTrigger className="text-base">
+                      USDB
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <TextSpan
+                        lhs="earnedCumulative:"
+                        rhs={
+                          points?.balancesByPointType.LIQUIDITY.byAsset.USDB
+                            .earnedCumulative
+                        }
+                      />
+                      <TextSpan
+                        lhs="earnedCumulativeBlock:"
+                        rhs={
+                          points?.balancesByPointType.LIQUIDITY.byAsset.USDB
+                            .earnedCumulativeBlock
+                        }
+                      />
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="item-3">
+                    <AccordionTrigger className="text-base">
+                      WETH
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <TextSpan
+                        lhs="earnedCumulative:"
+                        rhs={
+                          points?.balancesByPointType.LIQUIDITY.byAsset.WETH
+                            .earnedCumulative
+                        }
+                      />
+                      <TextSpan
+                        lhs="earnedCumulativeBlock:"
+                        rhs={
+                          points?.balancesByPointType.LIQUIDITY.byAsset.WETH
+                            .earnedCumulativeBlock
+                        }
+                      />
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </div>
               <div className="space-y-1">
                 <TextSpan
                   lhs="earnedCumulative:"
@@ -144,7 +227,7 @@ export default function Point({ params }: { params: { paddress: string } }) {
             </CardContent>
             <CardFooter>
               <CardDescription>
-                All values are probably denoted in pts
+                Most values are probably denoted in pts
               </CardDescription>
             </CardFooter>
           </Card>
@@ -196,7 +279,7 @@ export default function Point({ params }: { params: { paddress: string } }) {
             </CardContent>
             <CardFooter>
               <CardDescription>
-                All values are probably denoted in pts
+                Most values are probably denoted in pts
               </CardDescription>
             </CardFooter>
           </Card>

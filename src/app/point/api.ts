@@ -43,7 +43,9 @@ export const dappAuthSolve = async (
 }
 
 export const pointBalance = async (address: string, bearerToken: string) => {
-  if (!bearerToken) throw new Error('No bearer token')
+  if (!bearerToken) {
+    return new Error('No bearer token')
+  }
   try {
     const response = await axios({
       method: 'get', //you can set what request you want to be
@@ -61,4 +63,11 @@ export const pointBalance = async (address: string, bearerToken: string) => {
     console.log(error?.response.status)
     return error?.response
   }
+}
+export function isError(x: any) {
+  return (
+    x instanceof Error ||
+    (typeof x === 'object' && x !== null && x.error) ||
+    (typeof x === 'string' && x.startsWith('Error:'))
+  )
 }

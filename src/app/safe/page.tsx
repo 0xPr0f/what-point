@@ -64,7 +64,7 @@ export default function Safe() {
   const [safeName, setSafeName] = useState<string>()
   return (
     <>
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-8 mt-20">
         <div className="flex w-[350px] items-center space-x-1">
           <Input type="email" placeholder="Safe address..." />
           <Button variant="secondary" type="submit">
@@ -113,7 +113,7 @@ export default function Safe() {
             {tags.map((tag) => (
               <div key={tag}>
                 <div className="flex justify-between align-middle">
-                  <Button variant="link" className="text-sm">
+                  <Button variant="editedlink" className="text-sm">
                     {tag}
                   </Button>
                   <Button size="sm" variant="outline">

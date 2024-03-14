@@ -102,7 +102,7 @@ export default function Points() {
   }
   return (
     <>
-      <div className="flex flex-col gap-5 align-middle">
+      <div className="flex flex-col gap-5 align-middle mt-20">
         <div>
           <span>Manage points for your contracts</span>
         </div>

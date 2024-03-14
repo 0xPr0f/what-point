@@ -56,16 +56,7 @@ export default function Interport({
             })}
           >
             <Navbar />
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                marginTop: '80px',
-              }}
-            >
-              {children}
-            </div>
+            <div className="flex flex-col items-center">{children}</div>
             <Toaster />
           </RainbowKitProvider>
         </QueryClientProvider>

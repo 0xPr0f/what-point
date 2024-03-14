@@ -12,12 +12,12 @@ export default function Navbar() {
 
   return (
     <>
-      <div className={`flex justify-between items-center px-4 py-2 bg-black`}>
+      <div className="flex flex-col gap-3 sm:flex-row sm:gap-0 justify-between items-center px-4 py-2 bg-black">
         <span className="text-xl font-bold ">SBPT</span>
         <div className="flex flex-1 ml-4 gap-2">
           <Button
             style={{ color: '#9d9d9d' }}
-            variant={isActive('/') ? 'ghost' : 'default'}
+            variant={isActive('/') ? 'selected' : 'default'}
             asChild
           >
             <Link href="/" className="inline-block px-4 py-2">
@@ -26,7 +26,7 @@ export default function Navbar() {
           </Button>
           <Button
             style={{ color: '#9d9d9d' }}
-            variant={isActive('/safe') ? 'ghost' : 'default'}
+            variant={isActive('/safe') ? 'selected' : 'default'}
             asChild
           >
             <Link href="/safe" className="inline-block px-4 py-2">
@@ -35,7 +35,7 @@ export default function Navbar() {
           </Button>
           <Button
             style={{ color: '#9d9d9d' }}
-            variant={isActive('/point') ? 'ghost' : 'default'}
+            variant={isActive('/point') ? 'selected' : 'default'}
             asChild
           >
             <Link href="/point" className="inline-block px-4 py-2">

@@ -1,5 +1,9 @@
 import axios from 'axios'
-import { AuthChallenge, AuthSolve, BalanceResponse } from './types'
+import {
+  AuthChallengeResponse,
+  AuthSolveResponse,
+  BalanceResponse,
+} from './types'
 
 export const dappAuthChallenge = async (
   contractAddress: string,
@@ -16,7 +20,7 @@ export const dappAuthChallenge = async (
       headers: {},
     })
     // //console.log('Response:', response.data)
-    return response.data as AuthChallenge
+    return response.data as AuthChallengeResponse
   } catch (error) {
     console.error('Error making post request:', error.response)
     return error?.response
@@ -37,7 +41,7 @@ export const dappAuthSolve = async (
       headers: {},
     })
     //console.log('Response:', response.data)
-    return response.data as AuthSolve
+    return response.data as AuthSolveResponse
   } catch (error) {
     console.error('Error making post request:', error.response)
     return error?.response

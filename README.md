@@ -16,7 +16,7 @@ GET v1/contracts/:contractAddress/point-balances
 
 
 You must not do this, the blast api doesnt do this, this was simply done to not have to host another api wrapper url seperate from the one connected to this frontend   
-You may wonder, why i had to create a wrapper, one word "CORS", was getting cors error, and i decided to use a wrapper (routing all frontend request to the api on my backend?)    
+You may wonder, why i had to create a wrapper, one word "CORS", was getting cors error, and i decided to use a wrapper (routing all frontend request to the api on my backend??)    
 
 ```
 http://localhost:3000/xxxx has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.

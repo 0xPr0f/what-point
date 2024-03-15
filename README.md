@@ -9,7 +9,7 @@ Blast Testnet API- https://what-point.vercel.app/api/168587773
 Blast Mainnet API - https://what-point.vercel.app/api/81457  
 
 Example on Mainnet  
-https://what-point.vercel.app/api/81457
+https://what-point.vercel.app/api/81457     
 GET v1/contracts/:contractAddress/point-balances   
 
 

@@ -81,7 +81,37 @@ type Request = {
   secondsToFinalize?: number | null
 }
 
-type BatchedBatchIdResonse = {
+export type BatchedBatchIdResonse = {
   success: boolean
   batchId: string
+}
+
+// GET /v1/contracts/:contractAddress/batches/:batchId
+export type SingleBatchResponse = {
+  success: boolean
+  batch: BatchWithTransfers
+}
+
+type Status = 'PENDING' | 'CANCELLED' | 'FINALIZING' | 'FINALIZED'
+
+type Batch = {
+  contractAddress: string
+  id: string
+  pointType: PointType
+  createdAt: string // ISO8601
+  finalizeAt: string // ISO8601
+  updatedAt: string | null // ISO8601
+  status: Status
+  points: string // sum of points sent in transfers
+  transferCount: number
+}
+
+type BatchWithTransfers = Batch & {
+  transfers: Transfer[]
+}
+
+export type MultipleBatchResponse = {
+  success: boolean
+  batches: Batch[]
+  cursor: string | null
 }

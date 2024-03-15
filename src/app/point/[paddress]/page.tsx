@@ -72,7 +72,7 @@ export default function Point({ params }: { params: { paddress: string } }) {
         tittle: 'Auth Key expired',
         description: 'Duration of 1hr exceeded auth again',
         action: {
-          label: 'Auth',
+          label: 'A',
           onClick: () => router.push('/point'),
         },
       })
@@ -82,13 +82,28 @@ export default function Point({ params }: { params: { paddress: string } }) {
         description:
           'Bearer Token not found, allow cookies on this site and auth again',
         action: {
-          label: 'Auth',
+          label: 'A',
           onClick: () => router.push('/point'),
         },
       })
     }
     setPoints(response)
     //console.log(response)
+  }
+
+  const deleteAuthKey = async () => {
+    deleteCookies()
+    Toast({
+      tittle: 'Deleted Auth Key',
+      description: `You will be redirected to the points page in 5s`,
+      action: {
+        label: 'P',
+        onClick: () => router.push('/point'),
+      },
+    })
+    setTimeout(() => {
+      router.push('/point')
+    }, 5 * 1000)
   }
 
   useEffect(() => {
@@ -291,6 +306,11 @@ export default function Point({ params }: { params: { paddress: string } }) {
           </Card>
         </TabsContent>
       </Tabs>
+      <div className="relative float-right	">
+        <Button variant="default" onClick={deleteAuthKey}>
+          Delete AuthKey
+        </Button>
+      </div>
     </div>
   )
 }

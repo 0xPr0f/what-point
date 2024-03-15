@@ -128,8 +128,8 @@ export default function Points() {
                       const re = /(?:0[xX])?[0-9a-fA-F]+/
                       if (e.target.value === '' || re.test(e.target.value)) {
                         setPointsContract({
+                          ...pointContract,
                           contract_address: e.target.value,
-                          acceptedTOS: pointContract.acceptedTOS,
                         })
                       }
                     }}
@@ -145,7 +145,7 @@ export default function Points() {
                 checked={pointContract.acceptedTOS}
                 onCheckedChange={(e) => {
                   setPointsContract({
-                    contract_address: pointContract.contract_address,
+                    ...pointContract,
                     acceptedTOS: e as boolean,
                   })
                 }}

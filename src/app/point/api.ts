@@ -13,7 +13,7 @@ export const dappAuthChallenge = async (
   try {
     const response = await axios({
       method: 'post', //you can set what request you want to be
-      url: `/api/v1/${chainId}/dapp-auth/challenge`,
+      url: `/api/${chainId}/v1/dapp-auth/challenge`,
       data: {
         contractAddress: contractAddress,
         operatorAddress: operatorAddress,
@@ -35,7 +35,7 @@ export const dappAuthSolve = async (
   try {
     const response = await axios({
       method: 'post', //you can set what request you want to be
-      url: `/api/v1/${chainId}/dapp-auth/solve`,
+      url: `/api/${chainId}/v1/dapp-auth/solve`,
       data: {
         challengeData: challengeData,
         signature: signature,
@@ -61,7 +61,7 @@ export const pointBalance = async (
   try {
     const response = await axios({
       method: 'get', //you can set what request you want to be
-      url: `/api/v1/${chainId}/contracts/${address}/point-balances`,
+      url: `/api/${chainId}/v1/contracts/${address}/point-balances`,
       data: {},
       headers: {
         Authorization: `Bearer ${bearerToken}`,

@@ -15,4 +15,4 @@ GET v1/contracts/:contractAddress/point-balances
 
 
 
-Of course, you must not do this, the blast api doesnt do this, this was simple done to not have to host another api wrapper seperate from the one connected to this frontend
+You must not do this, the blast api doesnt do this, this was simply done to not have to host another api wrapper url seperate from the one connected to this frontend
